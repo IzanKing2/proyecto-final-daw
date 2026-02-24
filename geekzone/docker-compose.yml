@@ -1,0 +1,57 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: geekzone_app
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html          # monta tu código en vivo (cambios instantáneos)
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - geekzone_net
+
+  mysql:
+    image: mysql:8.0
+    container_name: geekzone_mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: geekzone
+      MYSQL_USER: geekzone_user
+      MYSQL_PASSWORD: secret
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - geekzone_net
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: geekzone_phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: secret
+    depends_on:
+      - mysql
+    networks:
+      - geekzone_net
+
+networks:
+  geekzone_net:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local

@@ -1,0 +1,57 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: geekzone_app
+    restart: unless-stopped
+    ports:
+      - "8000:80"  # Accederás por localhost:8000
+    volumes:
+      - .:/var/www/html  # CRÍTICO para ver cambios en tiempo real
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - geekzone_net
+
+  mysql:
+    image: mysql:8.0
+    container_name: geekzone_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306" # Para conectar desde fuera del contenedor
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - geekzone_net
+
+  # Te sugiero añadir phpMyAdmin para la Fase 1 (Base de Datos)
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: geekzone_phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+    depends_on:
+      - mysql
+    networks:
+      - geekzone_net
+
+networks:
+  geekzone_net:
+    driver: bridge
+
+volumes:
+  mysql_data:
