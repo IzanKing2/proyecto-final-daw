@@ -1,0 +1,46 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Image;
+use App\Models\Product;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+class ImageSeeder extends Seeder
+{
+    /**
+     * Crea imágenes de prueba para cada producto usando el factory.
+     */
+    public function run(): void
+    {
+        $this->command->comment('Cargando imágenes de productos...');
+
+        try {
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            Image::truncate();
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+            $productos = Product::all();
+
+            foreach ($productos as $producto) {
+                // Crear 1 imagen principal para el producto
+                Image::factory()->main()->create([
+                    'product_id' => $producto->id,
+                ]);
+
+                // Crear entre 0 y 2 imágenes secundarias
+                Image::factory()->count(rand(0, 2))->create([
+                    'product_id' => $producto->id,
+                ]);
+            }
+
+            $this->command->info('🌱 OK: Imágenes cargadas');
+        } catch (\Throwable $e) {
+            $this->command->error('❌ ERROR: Fallo crítico al cargar imágenes:');
+            $this->command->error($e->getMessage());
+            throw $e;
+        }
+    }
+}
+
