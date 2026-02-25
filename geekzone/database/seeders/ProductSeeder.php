@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Product;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,6 +13,9 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
+        // Definimos cuántos productos queremos crear
+        $cantidad = 10;
+
         $this->command->comment('Cargando productos...');
 
         try {
@@ -21,9 +23,15 @@ class ProductSeeder extends Seeder
             Product::truncate();
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-            Product::factory()->count(10)->create();
+            // range(1, $cantidad) genera el array [1, 2, 3, ..., 10]
+            // La barra de progreso avanza una vez por cada número del array
+            $this->command->withProgressBar(range(1, $cantidad), function () {
+                Product::factory()->create();
+            });
 
+            $this->command->newLine();
             $this->command->info('🌱 OK: Productos cargados exitósamente');
+
         } catch (\Throwable $e) {
             $this->command->error('❌ ERROR: Fallo crítico al cargar productos:');
             $this->command->error($e->getMessage());

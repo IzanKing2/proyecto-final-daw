@@ -23,7 +23,7 @@ class ImageSeeder extends Seeder
 
             $productos = Product::all();
 
-            foreach ($productos as $producto) {
+            $this->command->withProgressBar($productos, function (Product $producto) {
                 // Crear 1 imagen principal para el producto
                 Image::factory()->main()->create([
                     'product_id' => $producto->id,
@@ -33,9 +33,11 @@ class ImageSeeder extends Seeder
                 Image::factory()->count(rand(0, 2))->create([
                     'product_id' => $producto->id,
                 ]);
-            }
+            });
 
+            $this->command->newLine();
             $this->command->info('🌱 OK: Imágenes cargadas');
+
         } catch (\Throwable $e) {
             $this->command->error('❌ ERROR: Fallo crítico al cargar imágenes:');
             $this->command->error($e->getMessage());
@@ -43,4 +45,3 @@ class ImageSeeder extends Seeder
         }
     }
 }
-

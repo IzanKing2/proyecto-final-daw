@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -20,13 +19,19 @@ class CategorySeeder extends Seeder
 
         try {
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            // Vaciamos la tabla pivote (no tiene Modelo, se accede por nombre de tabla)
+            DB::table('category_collection')->truncate();
             Category::truncate();
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-            foreach ($categories as $name) {
+            // withProgressBar recorre el array y muestra una barra de progreso automáticamente.
+            // El segundo argumento es la función a ejecutar por cada elemento.
+            $this->command->withProgressBar($categories, function (string $name) {
                 Category::create(['name' => $name]);
-            }
+            });
 
+            // Salto de línea necesario después de la barra de progreso
+            $this->command->newLine();
             $this->command->info('🌱 OK: Categorias cargadas exitosamente');
 
         } catch (\Throwable $e) {

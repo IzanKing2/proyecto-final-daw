@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Role;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,6 +13,8 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
+        $roles = ['Admin', 'User'];
+
         $this->command->comment('Cargando roles...');
 
         try {
@@ -21,11 +22,11 @@ class RoleSeeder extends Seeder
             Role::truncate();
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-            Role::insert([
-                ['name' => 'Admin'],
-                ['name' => 'User']
-            ]);
+            $this->command->withProgressBar($roles, function (string $name) {
+                Role::create(['name' => $name]);
+            });
 
+            $this->command->newLine();
             $this->command->info('🌱 OK: Roles cargados exitósamente');
 
         } catch (\Throwable $e) {

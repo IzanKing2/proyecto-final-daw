@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Collection;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -36,10 +35,11 @@ class CollectionSeeder extends Seeder
             Collection::truncate();
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-            foreach ($collections as $name) {
+            $this->command->withProgressBar($collections, function (string $name) {
                 Collection::create(['name' => $name]);
-            }
+            });
 
+            $this->command->newLine();
             $this->command->info('🌱 OK: Colecciones cargadas exitosamente');
 
         } catch (\Throwable $e) {
