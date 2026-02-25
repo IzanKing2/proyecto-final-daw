@@ -3,14 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -19,8 +19,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'surname',
         'email',
         'password',
+        'role_id'
     ];
 
     /**
@@ -44,5 +46,54 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // ----------------------------------------------------------------
+    // RELACIONES
+    // ----------------------------------------------------------------
+
+    // Relación: un usuario pertenece a un rol
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    // Relación: un usuario tiene muchos orders(pedidos)
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    // Relación: un usuario tiene muchas reviews(reseñas)
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    // Relación: un usuario tiene un único carrito
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
+    }
+
+    // ----------------------------------------------------------------
+    // MÉTODOS REQUERIDOS POR JWTSubject
+    // ----------------------------------------------------------------
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    // ----------------------------------------------------------------
+    // MÉTODOS HELPER
+    // ----------------------------------------------------------------
+    public function isAdmin()
+    {
+        return $this->role->name === 'Admin';
     }
 }
