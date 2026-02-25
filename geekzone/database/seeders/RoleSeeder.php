@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Role;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class RoleSeeder extends Seeder
 {
@@ -18,9 +19,9 @@ class RoleSeeder extends Seeder
         $this->command->comment('Cargando roles...');
 
         try {
-            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            Schema::disableForeignKeyConstraints();
             Role::truncate();
-            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            Schema::enableForeignKeyConstraints();
 
             $this->command->withProgressBar($roles, function (string $name) {
                 Role::create(['name' => $name]);

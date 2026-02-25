@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class ProductSeeder extends Seeder
 {
@@ -19,9 +20,9 @@ class ProductSeeder extends Seeder
         $this->command->comment('Cargando productos...');
 
         try {
-            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            Schema::disableForeignKeyConstraints();
             Product::truncate();
-            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            Schema::enableForeignKeyConstraints();
 
             // range(1, $cantidad) genera el array [1, 2, 3, ..., 10]
             // La barra de progreso avanza una vez por cada número del array

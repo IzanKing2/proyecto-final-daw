@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Collection;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class CollectionSeeder extends Seeder
 {
@@ -31,9 +32,9 @@ class CollectionSeeder extends Seeder
         $this->command->comment('Cargando colecciones...');
 
         try {
-            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            Schema::disableForeignKeyConstraints();
             Collection::truncate();
-            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            Schema::enableForeignKeyConstraints();
 
             $this->command->withProgressBar($collections, function (string $name) {
                 Collection::create(['name' => $name]);

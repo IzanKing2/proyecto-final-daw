@@ -6,6 +6,7 @@ use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class ImageSeeder extends Seeder
 {
@@ -17,9 +18,9 @@ class ImageSeeder extends Seeder
         $this->command->comment('Cargando imágenes de productos...');
 
         try {
-            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            Schema::disableForeignKeyConstraints();
             Image::truncate();
-            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            Schema::enableForeignKeyConstraints();
 
             $productos = Product::all();
 

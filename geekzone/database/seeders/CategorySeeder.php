@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class CategorySeeder extends Seeder
 {
@@ -18,11 +19,11 @@ class CategorySeeder extends Seeder
         $this->command->comment('Cargando categorías...');
 
         try {
-            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            Schema::disableForeignKeyConstraints();
             // Vaciamos la tabla pivote (no tiene Modelo, se accede por nombre de tabla)
             DB::table('category_collection')->truncate();
             Category::truncate();
-            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            Schema::enableForeignKeyConstraints();
 
             // withProgressBar recorre el array y muestra una barra de progreso automáticamente.
             // El segundo argumento es la función a ejecutar por cada elemento.
