@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "GeekZone - API",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
