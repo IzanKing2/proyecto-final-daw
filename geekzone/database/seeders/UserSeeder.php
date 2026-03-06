@@ -22,13 +22,13 @@ class UserSeeder extends Seeder
             [
                 'name'     => 'Admin',
                 'email'    => 'admin@geekzone.test',
-                'password' => Hash::make('admin123'),
+                'password' => Hash::make('admin1234'),
                 'role_id'  => $adminRole->id,
             ],
             [
                 'name'     => 'User',
                 'email'    => 'user@geekzone.test',
-                'password' => Hash::make('user123'),
+                'password' => Hash::make('user1234'),
                 'role_id'  => $userRole->id,
             ],
         ];
