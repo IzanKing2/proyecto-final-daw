@@ -5,9 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Clase que representa un producto
+ * @package App\Models
+ */
+
 class Product extends Model
 {
     use HasFactory;
+
+    protected $table = 'products';
+
     protected $fillable = [
         'name',
         'description',
@@ -25,9 +33,9 @@ class Product extends Model
         'release_date' => 'datetime'
     ];
 
-    // ----------------------------------------------------------------
+    // ——————————————————————————————————————————————————————————————————
     // RELACIONES
-    // ----------------------------------------------------------------
+    // ——————————————————————————————————————————————————————————————————
 
     // Relación: un producto pertenece a una colección
     public function collection()

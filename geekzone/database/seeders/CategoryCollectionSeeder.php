@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryCollectionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $map = [

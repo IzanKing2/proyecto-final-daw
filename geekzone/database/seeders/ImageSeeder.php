@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Schema;
 
 class ImageSeeder extends Seeder
 {
-    /**
-     * Crea imágenes de prueba para cada producto usando el factory.
-     */
     public function run(): void
     {
         $this->command->comment('Cargando imágenes de productos...');

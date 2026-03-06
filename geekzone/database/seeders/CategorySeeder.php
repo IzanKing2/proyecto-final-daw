@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CategorySeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $categories = ['Marvel', 'K-pop', 'Futbol'];

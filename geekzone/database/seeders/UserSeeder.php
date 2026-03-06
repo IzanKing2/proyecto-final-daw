@@ -12,9 +12,6 @@ use Illuminate\Support\Facades\Schema;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $adminRole = Role::where('name', 'Admin')->first();

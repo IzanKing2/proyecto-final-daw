@@ -2,10 +2,19 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Clase que representa una reseña
+ * @package App\Models
+ */
 class Review extends Model
 {
+    use HasFactory;
+
+    protected $table = 'reviews';
+
     protected $fillable = [
         'rating',
         'comment',
@@ -13,9 +22,9 @@ class Review extends Model
         'product_id'
     ];
 
-    // ----------------------------------------------------------------
+    // ——————————————————————————————————————————————————————————————————
     // RELACIONES
-    // ----------------------------------------------------------------
+    // ——————————————————————————————————————————————————————————————————
     
     // Relación: una review(reseña) pertenece a un usuario
     public function user()

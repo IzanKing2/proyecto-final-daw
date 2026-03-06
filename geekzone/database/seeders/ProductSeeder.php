@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Schema;
 
 class ProductSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         // Definimos cuántos productos queremos crear

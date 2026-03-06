@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CollectionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $collections = [

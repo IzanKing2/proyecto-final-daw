@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Schema;
 
 class RoleSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $roles = ['Admin', 'User'];

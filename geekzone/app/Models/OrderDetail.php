@@ -2,10 +2,19 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Clase que representa un detalle de pedido
+ * @package App\Models
+ */
 class OrderDetail extends Model
 {
+    use HasFactory;
+
+    protected $table = 'order_details';
+
     protected $fillable = [
         'quantity',
         'price_at_purchase',
@@ -13,9 +22,9 @@ class OrderDetail extends Model
         'product_id'
     ];
 
-    // ----------------------------------------------------------------
+    // ——————————————————————————————————————————————————————————————————
     // RELACIONES
-    // ----------------------------------------------------------------
+    // ——————————————————————————————————————————————————————————————————
     
     // Relación: un orderDetail(detalle de pedido) pertenece a un order(pedido)
     public function order()
